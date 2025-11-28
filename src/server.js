@@ -10,9 +10,7 @@ const userRouter = require("./routes/user.route");
 const errorHandler = require("./middleware/errorHandler");
 const { attachUser } = require("./middleware/auth.middleware");
 
-const allowedOrigins = process.env.CLIENT_ORIGIN
-  ? process.env.CLIENT_ORIGIN.split(",").map((origin) => origin.trim())
-  : "*";
+const allowedOrigins = "*";
 
 const app = express();
 
