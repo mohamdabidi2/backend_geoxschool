@@ -10,13 +10,21 @@ const userRouter = require("./routes/user.route");
 const errorHandler = require("./middleware/errorHandler");
 const { attachUser } = require("./middleware/auth.middleware");
 
-const allowedOrigins = "*";
+const allowedOrigins = (process.env.CLIENT_ORIGINS || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 const app = express();
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, origin || allowedOrigins[0]);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );
